@@ -29,7 +29,16 @@ def do_command(command):
     if (len(url_val) == 0):
         # url_val = "127.0.0.1"
         url_val = "::1"
-        
+def do_comman(ipconfig):
+    global url_val
+    url_val = url_entry.get()
+    with subprocess.Popen(ipconfig + ' ' + url_val, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True) as p:
+        for line in p.stdout:
+            command_textbox.insert(tk.END,line)
+            command_textbox.update()
+    if (len(url_val) == 0):
+        # url_val = "127.0.0.1"
+        url_val = "::1"
 
     
 root = tk.Tk()
@@ -84,5 +93,9 @@ command_textbox.pack()
 # Makes the command button pass it's name to a function using lambda
 ping_btn = tk.Button(frame, text="Check to see if a URL is up and active", command=lambda:do_command("ping"))
 ping_btn.pack()
+
+#ipconfig
+ipconfig_button = tk.Button(frame, text="ipconfig", command=lambda:do_comman("ipconfig"))
+ipconfig_button.pack()
 
 root.mainloop()
