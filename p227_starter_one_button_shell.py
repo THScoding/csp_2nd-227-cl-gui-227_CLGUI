@@ -1,9 +1,9 @@
 import subprocess
 import tkinter as tk
 import tkinter.scrolledtext as tksc
-from tkinter import filedialog
+from tkinter import StringVar, filedialog
 from tkinter.filedialog import asksaveasfilename
-
+from tkinter import ttk
 def do_command():
     command = ["ping", "localhost"]
     # Windows version to limit to 4 requests: command = ["ping", "localhost", "-n", "4"]
@@ -94,8 +94,22 @@ command_textbox.pack()
 ping_btn = tk.Button(frame, text="Check to see if a URL is up and active", command=lambda:do_command("ping"))
 ping_btn.pack()
 
+
 #ipconfig
-ipconfig_button = tk.Button(frame, text="ipconfig", command=lambda:do_comman("ipconfig"))
+ipconfig_setting = print("selit")
+def ipconfig_runner():
+    print(ipconfig_setting)
+def ipconfig_setting_gelit():
+    ipconfig_setting = print("gelit")
+ipconfig_button = tk.Button(frame, text="ipconfig", command=lambda:ipconfig_runner(ipconfig_setting))
 ipconfig_button.pack()
+ipconfig_dropdown_list_var = StringVar(value="ipconfig")
+ipconfig_dropdown = ttk.Combobox(root, textvariable= ipconfig_dropdown_list_var)
+ipconfig_dropdown['values'] = ("gelit", "gelit squared", "gelit gah")
+ipconfig_dropdown.state(["readonly"])
+ipconfig_dropdown.bind('gelit', ipconfig_setting_gelit)
+
+ipconfig_dropdown.pack()
+
 
 root.mainloop()
