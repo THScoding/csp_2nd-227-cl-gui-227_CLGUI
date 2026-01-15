@@ -3,7 +3,8 @@ import tkinter as tk
 import tkinter.scrolledtext as tksc
 from tkinter import filedialog
 from tkinter.filedialog import asksaveasfilename
-
+import turtle as Turtle
+Trtl = Turtle
 def do_command():
     command = ["ping", "localhost"]
     # Windows version to limit to 4 requests: command = ["ping", "localhost", "-n", "4"]
