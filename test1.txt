@@ -79,3 +79,16 @@ Examples:
     > ipconfig /allcompartments /all ... Show detailed information about all
                                          compartments
 
+
+
+by using a command line similar to this we can create and incrimental thing for as each line completes simply switch print for a value for the progress bar
+ with subprocess.Popen(command_list, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=0, text=True) as p:
+        for line in p.stdout:
+            command_textbox.insert(tk.END,line)
+            if check == True:
+                i = i+1
+                print("subprocess check working")
+                
+            else:
+                command_textbox.insert(tk.END,line)
+                command_textbox.update()

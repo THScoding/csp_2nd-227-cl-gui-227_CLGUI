@@ -6,9 +6,14 @@ from tkinter.filedialog import asksaveasfilename
 from tkinter import ttk
 import platform
 
+i = 0
 check = False
+check_int_index = 0
 def do_command(command):
     global check
+    global i
+    global check_int_index
+    mac_ping = "ping"
     # If url_entry is blank, use localhost IP address 
     url_val = url_entry.get()
     if (len(url_val) == 0):
@@ -16,20 +21,30 @@ def do_command(command):
         # ::1 does not work on Mac, likely due to firewall settings
     
     command_textbox.delete(1.0, tk.END)
-    command_textbox.insert(tk.END, command + " working....\n")
+    if check == True:
+        command_textbox.insert(tk.END,"check working....\n")
+    else:
+        command_textbox.insert(tk.END, command + " working....\n")
     command_textbox.update()
 
-    command_list = command + " " + url_val
+    if check == True:
+        i=i+1
+    else:
+        command_list = command + " " + url_val
+    
     #If running on Mac, replace commands where necessary
     if (platform.system() == "Darwin"):
         if (command == "tracert"):
             command = "traceroute"
         if (command == "ping"):
             command = "ping -c4" # Mac otherwise pings without limit
+        if (mac_ping == "ping"):
+            mac_ping = "ping -c4"
             
     #adding new command code
-    if check == True:
-        print("do command check working")
+    
+        
+        
     
     # NOTE: For Mac, to avoid FileNotFoundError, create list of command args. (Alternative?: add shell=true option to Popen method call)
     command_list = (command + ' ' + url_val).split()
@@ -41,10 +56,42 @@ def do_command(command):
     """
     
     # These lines allow for real time output in the GUI
-    with subprocess.Popen(command_list, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=0, text=True) as p:
-        for line in p.stdout:
-            command_textbox.insert(tk.END,line)
+    if check == True:
+        i = i+1
+        check == False
+        
+        url_val = url_entry.get()
+        if (len(url_val) == 0):
+            command_textbox.insert(tk.END, "this is your own computer silly of course it's working\n")
             command_textbox.update()
+        else:
+            check_list = mac_ping + '' + url_val
+            with subprocess.Popen(command_list, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=0, text=True) as c:      
+                for line in c.stdout:
+                    check_line = line.strip()                   
+                    if check_line == "":
+                        i=i+1
+                    else:
+                        strcheck_line = str(check_line)
+                        strcheck_line_index = strcheck_line[5]
+                        if strcheck_line_index == 'r':
+                            command_textbox.insert(tk.END, "I'm sorry but this web adress can't be found, maybe a typo?\n")
+                            command_textbox.update()
+                        else:
+                            
+                            check_int_index =check_int_index + 1
+                            if check_int_index >= 7:
+                                command_textbox.insert(tk.END, "This website is currently active, try other commands like ping to get more information on the network")
+                    command_textbox.update()
+            
+    else:
+        print("working")
+        with subprocess.Popen(command_list, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=0, text=True) as p:
+            for line in p.stdout:
+                command_textbox.insert(tk.END,line)
+                command_textbox.update()
+    check = False
+
             
             
 #add to main command
@@ -114,7 +161,6 @@ ping_btn = tk.Button(frame, text="Check to see if a URL is up and active", comma
 ping_btn.pack()
 def check_button():
     global check
-    print("working")
     check = True
     do_command('ping')
 
