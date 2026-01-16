@@ -108,7 +108,8 @@ def do_comman(ipconfig):
 
     
 root = tk.Tk()
-frame = tk.Frame(root)
+# Set the frame width to 200 pixels
+frame = tk.Frame(root, width=400, height=100, bg='lightblue') 
 frame.pack()
 
 # set up button to run the do_command function
@@ -116,23 +117,23 @@ ping_btn = tk.Button(frame, text="ping", command=lambda: do_command('ping'))
 ping_btn.pack()
 
 # creates the frame with label for the text box
-frame_URL = tk.Frame(root, pady=10,  bg="black") # change frame color
+frame_URL = tk.Frame(root, pady=10,  bg="#2C2C2C") # change frame color
 frame_URL.pack()
 
 # decorative label
 url_label = tk.Label(frame_URL, text="Enter a URL of interest: ", 
+    fg="#818181",
     compound="center",
     font=("comic sans", 14),
     bd=0, 
     relief=tk.FLAT, 
     cursor="heart",
-    fg="mediumpurple3",
-    bg="black")
-url_label.pack(side=tk.LEFT)
+    bg="#2C2C2C")
+url_label.pack(side=tk.RIGHT)
 url_entry= tk.Entry(frame_URL,  font=("comic sans", 14)) # change font
-url_entry.pack(side=tk.LEFT)
+url_entry.pack(side=tk.RIGHT)
 
-frame = tk.Frame(root,  bg="black") # change frame color
+frame = tk.Frame(root, ) # change frame color
 frame.pack()
 
 
@@ -152,12 +153,12 @@ save_btn = tk.Button(frame, text="save", command=mSave)
 save_btn.pack()
 
 # Adds an output box to GUI.
-command_textbox = tksc.ScrolledText(frame, height=10, width=100)
+command_textbox = tksc.ScrolledText(frame, height=10, width=150, bd=0, bg="#2C2C2C")
 command_textbox.pack()
 
 # CODE TO ADD
 # Makes the command button pass it's name to a function using lambda
-ping_btn = tk.Button(frame, text="Check to see if a URL is up and active", command=lambda:check_button())
+ping_btn = tk.Button(frame, text="Check to see if a URL is up and active", fg="#0004FF", command=lambda:check_button())
 ping_btn.pack()
 def check_button():
     global check
@@ -179,6 +180,10 @@ ipconfig_dropdown.state(["readonly"])
 ipconfig_dropdown.bind('gelit', ipconfig_setting_gelit)
 
 ipconfig_dropdown.pack()
+
+root.configure(bg="#201F1F")
+
+
 
 
 root.mainloop()
