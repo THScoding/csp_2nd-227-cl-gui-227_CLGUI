@@ -80,8 +80,8 @@ def do_command(command):
                         else:
                             
                             check_int_index =check_int_index + 1
-                            if check_int_index >= 7:
-                                command_textbox.insert(tk.END, "This website is currently active, try other commands like ping to get more information on the network")
+                            if check_int_index >= 9:
+                                command_textbox.insert(tk.END, "This website is currently active, try other commands like ping to get more information on the network\n")
                     command_textbox.update()
             
     else:
