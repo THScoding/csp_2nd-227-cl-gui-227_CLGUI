@@ -6,7 +6,9 @@ from tkinter.filedialog import asksaveasfilename
 from tkinter import ttk
 import platform
 
+check = False
 def do_command(command):
+    global check
     # If url_entry is blank, use localhost IP address 
     url_val = url_entry.get()
     if (len(url_val) == 0):
@@ -24,6 +26,10 @@ def do_command(command):
             command = "traceroute"
         if (command == "ping"):
             command = "ping -c4" # Mac otherwise pings without limit
+            
+    #adding new command code
+    if check == True:
+        print("do command check working")
     
     # NOTE: For Mac, to avoid FileNotFoundError, create list of command args. (Alternative?: add shell=true option to Popen method call)
     command_list = (command + ' ' + url_val).split()
@@ -33,6 +39,7 @@ def do_command(command):
     (because not actually line buffering, because the PIPE is not a TTY; the stdout iteration starts too late):  
         subprocess.Popen(commandList, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)    
     """
+    
     # These lines allow for real time output in the GUI
     with subprocess.Popen(command_list, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=0, text=True) as p:
         for line in p.stdout:
@@ -58,7 +65,7 @@ frame = tk.Frame(root)
 frame.pack()
 
 # set up button to run the do_command function
-ping_btn = tk.Button(frame, text="ping", command=do_command)
+ping_btn = tk.Button(frame, text="ping", command=lambda: do_command('ping'))
 ping_btn.pack()
 
 # creates the frame with label for the text box
@@ -103,12 +110,16 @@ command_textbox.pack()
 
 # CODE TO ADD
 # Makes the command button pass it's name to a function using lambda
-ping_btn = tk.Button(frame, text="Check to see if a URL is up and active", command=lambda:do_command("ping"))
+ping_btn = tk.Button(frame, text="Check to see if a URL is up and active", command=lambda:check_button())
 ping_btn.pack()
-
+def check_button():
+    global check
+    print("working")
+    check = True
+    do_command('ping')
 
 #ipconfig
-ipconfig_setting = print("selit")
+ipconfig_setting = "selit"
 def ipconfig_runner():
     print(ipconfig_setting)
 def ipconfig_setting_gelit():
